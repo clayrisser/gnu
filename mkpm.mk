@@ -33,10 +33,8 @@ MKPM_PKG_SOURCE := https://gitlab.com/bitspur/community/mkgnu.git
 MKPM_PKG_FILES_REGEX :=
 
 MKPM_PACKAGES := \
-	mkchain=0.0.2
 
 MKPM_REPOS := \
-	https://gitlab.com/bitspur/community/mkpm-stable.git
 
 ############# MKPM BOOTSTRAP SCRIPT BEGIN #############
 MKPM_BOOTSTRAP := https://bitspur.gitlab.io/community/mkpm/bootstrap.mk

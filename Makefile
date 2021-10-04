@@ -22,7 +22,6 @@
 
 include mkpm.mk
 ifneq (,$(MKPM))
--include $(MKPM)/mkchain
 include main.mk
 
 PACK_DIR := $(MKPM_TMP)/pack
