@@ -27,8 +27,7 @@ include main.mk
 PACK_DIR := $(MKPM_TMP)/pack
 
 .PHONY: info
-info:
-	@$(ENV)
+info: ;
 
 .PHONY: pack
 pack:

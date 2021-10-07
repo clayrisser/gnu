@@ -27,34 +27,26 @@ ifneq ($(NIX_ENV),true)
 		export SED ?= $(call ternary,gsed --version,gsed,sed)
 	endif
 endif
-ifeq (,$(SED))
-	ifneq ($(call ternary,sed --version,true,false),true)
-		ifeq ($(PLATFORM),win32)
-			SED_DOWNLOAD ?= https://bitbucket.org/xoviat/chocolatey-packages/raw/4ce05f43ec7fcb21be34221c79198df3aae81f54/sed/4.8/tools/install/sed-windows-master/sed-4.8-x64.exe
-			export SED := $(HOMEPATH)\.mkpm\bin\sed.exe
+ifeq (,$(GIT))
+	ifeq ($(PLATFORM),win32)
+		ifeq ($(call ternary,git --version,true,false),true)
+			export GIT := "$(shell $(WHICH) git)"
+			GIT_ROOT := $(shell cmd.exe /q /v /c " \
+				set "git=$(GIT)" && \
+				echo !GIT:~1,-13!")
+		else
+			ifeq ($(FLAVOR),win32)
+				GIT_DOWNLOAD ?= https://gitlab.com/api/v4/projects/30203156/packages/generic/portable-git/2.33.0.2/Win32PortableGit.zip
+			else
+				GIT_DOWNLOAD ?= https://gitlab.com/api/v4/projects/30203156/packages/generic/portable-git/2.33.0.2/Win64PortableGit.zip
+			endif
+			GIT_ROOT := $(HOME)\.mkpm\Git
+			export GIT := "$(GIT_ROOT)\cmd\git.exe"
 		endif
 	endif
 endif
-ifeq (,$(GREP))
-	ifneq ($(call ternary,grep --version,true,false),true)
-		ifeq ($(PLATFORM),win32)
-			GREP_DOWNLOAD ?= https://bitbucket.org/xoviat/chocolatey-packages/raw/4ce05f43ec7fcb21be34221c79198df3aae81f54/grep/2.10.05082020/tools/install/bin/grep.exe
-			export GREP := $(HOMEPATH)\.mkpm\bin\grep.exe
-			LIBICONV_DLL_DOWNLOAD ?= https://bitbucket.org/xoviat/chocolatey-packages/raw/4ce05f43ec7fcb21be34221c79198df3aae81f54/grep/2.10.05082020/tools/install/bin/libiconv-2.dll
-			LIBICONV_DLL := $(HOMEPATH)\.mkpm\bin\libiconv-2.dll
-			LIBINTL_DLL_DOWNLOAD ?= https://bitbucket.org/xoviat/chocolatey-packages/raw/4ce05f43ec7fcb21be34221c79198df3aae81f54/grep/2.10.05082020/tools/install/bin/libintl-8.dll
-			LIBINTL_DLL := $(HOMEPATH)\.mkpm\bin\libintl-8.dll
-			LIBPCRE_DLL_DOWNLOAD ?= https://bitbucket.org/xoviat/chocolatey-packages/raw/4ce05f43ec7fcb21be34221c79198df3aae81f54/grep/2.10.05082020/tools/install/bin/libpcre-0.dll
-			LIBPCRE_DLL := $(HOMEPATH)\.mkpm\bin\libpcre-0.dll
-		endif
-	endif
-endif
-ifeq (,$(FIND))
-	ifneq ($(call ternary,find --version,true,false),true)
-		FIND_DOWNLOAD ?= https://sourceforge.net/projects/ezwinports/files/findutils-4.2.30-5-w32-bin.zip/download
-		export FIND := $(HOMEPATH)\.mkpm\find\bin\find.exe
-	endif
-endif
+
+export GIT ?= $(call ternary,git --version,git,true)
 export AWK ?= awk
 export CD ?= cd
 export GREP ?= grep
@@ -137,42 +129,16 @@ export unzip ?= unzip
 
 -include $(MKPM)/.mkgnu
 $(MKPM)/.mkgnu:
-ifneq (,$(GREP_DOWNLOAD))
 ifeq ($(SHELL),cmd.exe)
-	@$(GREP) --version $(NOOUT) || ( \
-		$(DOWNLOAD) $(GREP) $(GREP_DOWNLOAD) && \
-		$(DOWNLOAD) $(LIBICONV_DLL) $(LIBICONV_DLL_DOWNLOAD) && \
-		$(DOWNLOAD) $(LIBINTL_DLL) $(LIBINTL_DLL_DOWNLOAD) && \
-		$(DOWNLOAD) $(LIBPCRE_DLL) $(LIBPCRE_DLL_DOWNLOAD) \
-	)
-else
-	@$(GREP) --version $(NOOUT) || ( \
-		$(DOWNLOAD) $(GREP) $(GREP_DOWNLOAD) && \
-		$(CHMOD) +x $(GREP) $(NOFAIL) \
+ifneq (,$(GIT_DOWNLOAD))
+	@$(GIT) --version $(NOOUT) || ( \
+		@$(call mkdir_p,$(GIT_ROOT)) && \
+		cd "$(GIT_ROOT)" && \
+		$(DOWNLOAD) "$(GIT_ROOT)/PortableGit.zip" $(GIT_DOWNLOAD) && \
+		tar -xzf "$(GIT_ROOT)/PortableGit.zip" && \
+		$(call rm_rf,"$(GIT_ROOT)/PortableGit.zip") \
 	)
 endif
-endif
-ifneq (,$(FIND_DOWNLOAD))
-ifeq ($(SHELL),cmd.exe)
-	@$(call mkdir_p,$(HOME)/.mkpm/find)
-	@$(FIND) --version $(NOOUT) || ( \
-		$(DOWNLOAD) "$(HOME)/.mkpm/find/find.zip" $(FIND_DOWNLOAD) && \
-		$(CD) "$(HOME)/.mkpm/find" && \
-		$(TAR) -xzf "$(HOME)/.mkpm/find/find.zip" && \
-		$(call rm_rf,"$(HOME)/.mkpm/find/find.zip") \
-	)
-else
-	@$(FIND) --version $(NOOUT) || ( \
-		$(DOWNLOAD) $(FIND) $(FIND_DOWNLOAD) && \
-		$(CHMOD) +x $(FIND) $(NOFAIL) \
-	)
-endif
-endif
-ifneq (,$(SED_DOWNLOAD))
-	@$(SED) --version $(NOOUT) || ( \
-		$(DOWNLOAD) $(SED) $(SED_DOWNLOAD) && \
-		$(CHMOD) +x $(SED) $(NOFAIL) \
-	)
 endif
 	@$(call mkdir_p,$(@D))
 	@$(call touch_m,$@)
