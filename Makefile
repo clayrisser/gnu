@@ -3,7 +3,7 @@
 # File Created: 03-10-2021 22:03:16
 # Author: Clay Risser
 # -----
-# Last Modified: 03-10-2021 22:54:52
+# Last Modified: 07-10-2021 16:41:57
 # Modified By: Clay Risser
 # -----
 # BitSpur Inc (c) Copyright 2021
@@ -27,7 +27,8 @@ include main.mk
 PACK_DIR := $(MKPM_TMP)/pack
 
 .PHONY: info
-info: ;
+info:
+	@$(ENV)
 
 .PHONY: pack
 pack:

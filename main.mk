@@ -3,7 +3,7 @@
 # File Created: 03-10-2021 22:03:16
 # Author: Clay Risser
 # -----
-# Last Modified: 03-10-2021 22:54:23
+# Last Modified: 07-10-2021 16:40:51
 # Modified By: Clay Risser
 # -----
 # BitSpur Inc (c) Copyright 2021
@@ -25,24 +25,6 @@ ifneq ($(NIX_ENV),true)
 		export FIND ?= $(call ternary,gfind --version,gfind,find)
 		export GREP ?= $(call ternary,ggrep --version,ggrep,grep)
 		export SED ?= $(call ternary,gsed --version,gsed,sed)
-	endif
-endif
-ifeq (,$(GIT))
-	ifeq ($(PLATFORM),win32)
-		ifeq ($(call ternary,git --version,true,false),true)
-			export GIT := "$(shell $(WHICH) git)"
-			GIT_ROOT := $(shell cmd.exe /q /v /c " \
-				set "git=$(GIT)" && \
-				echo !GIT:~1,-13!")
-		else
-			ifeq ($(FLAVOR),win32)
-				GIT_DOWNLOAD ?= https://gitlab.com/api/v4/projects/30203156/packages/generic/portable-git/2.33.0.2/Win32PortableGit.zip
-			else
-				GIT_DOWNLOAD ?= https://gitlab.com/api/v4/projects/30203156/packages/generic/portable-git/2.33.0.2/Win64PortableGit.zip
-			endif
-			GIT_ROOT := $(HOME)\.mkpm\Git
-			export GIT := "$(GIT_ROOT)\cmd\git.exe"
-		endif
 	endif
 endif
 
@@ -126,19 +108,3 @@ export TOP ?= top
 # INFOZIP
 export zip ?= zip
 export unzip ?= unzip
-
--include $(MKPM)/.mkgnu
-$(MKPM)/.mkgnu:
-ifeq ($(SHELL),cmd.exe)
-ifneq (,$(GIT_DOWNLOAD))
-	@$(GIT) --version $(NOOUT) || ( \
-		@$(call mkdir_p,$(GIT_ROOT)) && \
-		cd "$(GIT_ROOT)" && \
-		$(DOWNLOAD) "$(GIT_ROOT)/PortableGit.zip" $(GIT_DOWNLOAD) && \
-		tar -xzf "$(GIT_ROOT)/PortableGit.zip" && \
-		$(call rm_rf,"$(GIT_ROOT)/PortableGit.zip") \
-	)
-endif
-endif
-	@$(call mkdir_p,$(@D))
-	@$(call touch_m,$@)
