@@ -3,8 +3,8 @@
 # File Created: 03-10-2021 22:03:16
 # Author: Clay Risser
 # -----
-# Last Modified: 07-10-2021 16:39:41
-# Modified By: Clay Risser
+# Last Modified: 28-10-2021 00:23:44
+# Modified By: Jam Risser
 # -----
 # BitSpur Inc (c) Copyright 2021
 #
@@ -22,7 +22,7 @@
 
 MKPM_PKG_NAME := gnu
 
-MKPM_PKG_VERSION := 0.0.1
+MKPM_PKG_VERSION := 0.0.2
 
 MKPM_PKG_DESCRIPTION := "add gnu commands to makefiles"
 

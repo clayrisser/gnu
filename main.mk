@@ -3,8 +3,8 @@
 # File Created: 03-10-2021 22:03:16
 # Author: Clay Risser
 # -----
-# Last Modified: 07-10-2021 16:40:51
-# Modified By: Clay Risser
+# Last Modified: 28-10-2021 00:23:24
+# Modified By: Jam Risser
 # -----
 # BitSpur Inc (c) Copyright 2021
 #
@@ -106,5 +106,7 @@ export PS ?= ps
 export TOP ?= top
 
 # INFOZIP
-export zip ?= zip
-export unzip ?= unzip
+export ZIP ?= zip
+export UNZIP ?= unzip
+
+export GNU_READY ?= true
