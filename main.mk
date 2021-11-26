@@ -3,8 +3,8 @@
 # File Created: 03-10-2021 22:03:16
 # Author: Clay Risser
 # -----
-# Last Modified: 28-10-2021 00:23:24
-# Modified By: Jam Risser
+# Last Modified: 26-11-2021 01:56:27
+# Modified By: Clay Risser
 # -----
 # BitSpur Inc (c) Copyright 2021
 #
@@ -30,13 +30,23 @@ endif
 
 export GIT ?= $(call ternary,git --version,git,true)
 export AWK ?= awk
-export CD ?= cd
 export GREP ?= grep
 export JQ ?= jq
 export READLINE ?= readline
 export SED ?= sed
 export TAR ?= tar
 export TIME ?= time
+
+# SHELL
+export CD ?= cd
+export DO ?= do
+export DONE ?= done
+export FI ?= fi
+export FOR ?= for
+export IF ?= if
+export READ ?= read
+export THEN ?= then
+export WHILE ?= while
 
 # COREUTILS
 export BASENAME ?= basename
