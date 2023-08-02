@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "bitspur",
     "cloc",
     "gnumake",
     "gnused",
@@ -8,13 +9,14 @@
     "mkgnu",
     "mkpm",
     "nixpkgs",
+    "risser",
     "stdenv"
   ],
   "psi-header.variables": [["projectCreationYear", "2021"]],
   "psi-header.config": {
     "blankLinesAfter": 1,
-    "company": "BitSpur Inc",
-    "copyrightHolder": "BitSpur Inc",
+    "company": "BitSpur",
+    "copyrightHolder": "BitSpur",
     "creationDateZero": "asIs",
     "forceToTop": true,
     "initials": "CR",
@@ -97,5 +99,8 @@
   "psi-header.license-reference": {
     "uri": "../LICENSE",
     "uriIsLocalFile": true
+  },
+  "files.associations": {
+    "Mkpmfile": "makefile"
   }
 }
