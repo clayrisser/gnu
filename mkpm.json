@@ -4,6 +4,7 @@
   "description": "add gnu commands to makefiles",
   "author": "Clay Risser <clayrisser@gmail.com>",
   "repo": "git@gitlab.com:bitspur/mkpm/packages.git",
+  "source": "https://gitlab.com/bitspur/mkpm/gnu.git",
   "packages": {
     "default": {}
   },
